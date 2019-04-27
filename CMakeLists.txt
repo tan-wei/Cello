@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.8.0)
 
-project(Cello LANGUAGES C VERSION 2.1.0)
+project(Cello LANGUAGES C VERSION 2.1.1)
 
 set(CMAKE_C_STANDARD 99)
 
@@ -18,7 +18,7 @@ option(CELLO_BUILD_EXAMPLES OFF)
 find_package(Threads REQUIRED)
 
 ###############################################################################
-# Add Cello Library
+# Add Cello
 ###############################################################################
 
 set(SOURCES src/Alloc.c
@@ -58,7 +58,7 @@ target_link_libraries(Cello PRIVATE Threads::Threads)
 target_link_libraries(Cello PRIVATE m)
 
 ###############################################################################
-# Build Tests
+# Build Cello Tests
 ###############################################################################
 
 if(CELLO_BUILD_TESTS)
@@ -75,7 +75,7 @@ if(CELLO_BUILD_TESTS)
 endif()
 
 ###############################################################################
-# Build Examples
+# Build Cello Examples
 ###############################################################################
 
 if(CELLO_BUILD_EXAMPLES)
@@ -86,3 +86,33 @@ if(CELLO_BUILD_EXAMPLES)
 	endmacro()
 	add_subdirectory(examples)
 endif()
+
+###############################################################################
+# Install Cello
+###############################################################################
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+        DESTINATION include
+        FILES_MATCHING PATTERN "*.hpp")
+
+install(TARGETS Cello
+        DESTINATION bin)
+
+###############################################################################
+# Package Cello
+###############################################################################
+
+set(CPACK_PACKAGE_VENDOR "Daniel Holden")
+set(CPACK_PACKAGE_CONTACT "contact@theorangeduck.com")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY " Higher level programming in C")
+set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+
+set(CPACK_RPM_PACKAGE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE.md")
+
+set(CPACK_SOURCE_GENERATOR "TGZ;ZIP")
+
+include(CPack)
