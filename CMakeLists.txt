@@ -55,7 +55,9 @@ add_library(Cello::Cello ALIAS Cello)
 target_include_directories(Cello PUBLIC include)
 
 target_link_libraries(Cello PRIVATE Threads::Threads)
-target_link_libraries(Cello PRIVATE m)
+if(NOT MSVC)
+        target_link_libraries(Cello PRIVATE m)
+endif()
 
 ###############################################################################
 # Build Cello Tests
